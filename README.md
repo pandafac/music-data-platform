@@ -3,7 +3,7 @@
 > 腾讯音乐高校 AI Hackathon · 赛道一（TME 产品创新功能）
 > **把榜单快照，变成一个随时可查的音乐数据台。**
 
-在线体验：**<部署后把 Netlify 链接填到这里>**
+在线体验：**https://pandafac.github.io/music-data-platform/**
 
 ---
 
@@ -103,14 +103,20 @@ node tools/inline-covers.mjs   # 重新内联封面
 
 ## 部署
 
-见 [`netlify.toml`](netlify.toml)：发布目录为 `demo`，纯静态、无需构建。
+**当前线上地址**：https://pandafac.github.io/music-data-platform/
+
+已配置自动部署：
+
+| 平台 | 方式 | 配置 |
+| --- | --- | --- |
+| **GitHub Pages** | 工作流自动部署（当前使用） | [`.github/workflows/pages.yml`](.github/workflows/pages.yml)，发布 `demo/` |
+| Netlify | 可选，连同一个仓库 | [`netlify.toml`](netlify.toml)，构建命令留空、发布目录 `demo` |
+
+两条路都**不需要构建步骤**——纯静态。
 
 ```bash
-# 方式一：Netlify CLI
-npx netlify-cli deploy --prod --dir=demo
-
-# 方式二：Git 托管（推荐）
-# 推到 GitHub 后在 Netlify 里 "Import from Git"，构建命令留空、发布目录填 demo
+# 本地预览
+npx serve demo
 ```
 
 ---
