@@ -30,6 +30,9 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # 仓库尚未开启 Pages 时，由工作流自动开启（否则会报 "Get Pages site failed"）
+          enablement: true
 
       - name: Upload demo/ as artifact
         uses: actions/upload-pages-artifact@v3
