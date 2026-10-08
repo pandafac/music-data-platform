@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>音乐数据台 · Demo</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="phone">
+  <header class="topbar">
+    <button class="icon-btn" id="backBtn" title="返回" aria-label="返回" hidden><span id="backIcon"></span></button>
+    <div class="topbar-title" id="topTitle">数据现场</div>
+    <div class="pill-group" id="timeTabs">
+      <button class="pill active" data-scope="today">今天</button>
+      <button class="pill" data-scope="history">往年今日</button>
+    </div>
+  </header>
+
+  <main id="views">
+
+    <!-- ============ 数据现场 ============ -->
+    <section class="view active" id="view-home">
+      <div class="hero" id="hero">
+        <div class="hero-top">
+          <span class="tag neutral" id="heroBadge">今日回榜</span>
+          <span class="tag ai">AI 叙述</span>
+        </div>
+        <h1 class="hero-headline" id="heroHeadline">正在加载…</h1>
+        <div class="hero-chart" id="heroChart"><div class="skeleton skeleton-chart"></div></div>
+        <div class="hero-meta" id="heroMeta"></div>
+        <div class="hero-dots" id="heroDots"></div>
+      </div>
+
+      <div class="panel">
+        <div class="field">
+          <div class="field-label">找走势</div>
+          <div class="searchbar">
+            <span class="searchbar-icon" id="icoSongSearch"></span>
+            <input id="searchInput" placeholder="搜歌手 / 歌名，回车进入走势页" autocomplete="off">
+          </div>
+          <div class="ai-asks" id="songAsks"></div>
+        </div>
+
+        <div class="field ai-field">
+          <div class="field-label"><span class="tag ai">AI</span> 问数据</div>
+          <div class="searchbar">
+            <span class="searchbar-icon" id="icoAsk"></span>
+            <input id="aiInput" placeholder="问一句，比如「哪首歌在榜最久？」" autocomplete="off">
+          </div>
+          <div class="ai-asks" id="aiAsks"></div>
+          <div class="ai-answer" id="aiAnswer" hidden></div>
+        </div>
+      </div>
+
+      <h2 class="section-title">榜单速览</h2>
+      <div class="chart-strip" id="chartStrip"></div>
+
+      <h2 class="section-title">记录墙</h2>
+      <div class="records" id="records"></div>
+
+      <div class="source-note" id="homeSource"></div>
+    </section>
+
+    <!-- ============ 榜单轨迹 ============ -->
+    <section class="view" id="view-track">
+      <div class="track-head">
+        <div class="cover track-cover" id="trackCover"></div>
+        <div class="track-head-main">
+          <div class="track-title" id="trackTitle"></div>
+          <div class="track-sub" id="trackSub"></div>
+        </div>
+        <button class="fav-btn" id="favBtn" aria-pressed="false" title="收藏这条走势">
+          <span id="favIcon"></span><span id="favText">收藏</span>
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-label">榜单轨迹</span>
+          <span class="unit-note" id="trackUnit"></span>
+        </div>
+        <div class="track-chart" id="trackChart"></div>
+        <div class="track-seq" id="trackSeq"></div>
+      </div>
+
+      <div class="metrics" id="trackMetrics"></div>
+      <div class="metric-note" id="metricNote" hidden></div>
+
+      <div class="card">
+        <div class="card-label">调整口径</div>
+        <div class="ctrl-row">
+          <span>榜单</span>
+          <select id="trackChartSel"></select>
+        </div>
+        <div class="ctrl-row" id="trackWindowRow">
+          <span>时间窗</span>
+          <select id="trackWindowSel">
+            <option value="all">全部</option>
+            <option value="30">近 30 期</option>
+            <option value="12">近 12 期</option>
+          </select>
+        </div>
+        <div class="ctrl-row">
+          <span>合并重录/多版本</span>
+          <label class="switch"><input type="checkbox" id="mergeToggle" checked><span></span></label>
+        </div>
+      </div>
+
+      <div class="card ai-card">
+        <div class="card-head">
+          <span class="card-label">AI 解读</span>
+          <span class="unit-note" id="aiMeta"></span>
+        </div>
+        <div class="ai-verdict" id="trackVerdict"></div>
+        <ul class="ai-list" id="trackAiList"></ul>
+        <div class="ai-hotsrc" id="trackHotSrc"></div>
+        <div class="ai-legend">「事实」来自榜单数据 · 「热点」来自外部平台且不计入计算 · 「解读」由 AI 生成，仅供参考</div>
+      </div>
+
+      <div class="card ai-card">
+        <div class="card-head">
+          <span class="card-label">AI 追问</span>
+          <span class="unit-note">就这首歌继续问</span>
+        </div>
+        <div class="searchbar">
+          <span class="searchbar-icon" id="icoAskTrack"></span>
+          <input id="trackAiInput" placeholder="比如「它掉出去过吗？」" autocomplete="off">
+        </div>
+        <div class="ai-asks" id="trackAsks"></div>
+        <div class="ai-answer" id="trackAiAnswer" hidden></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-ghost" id="toCompareFromTrack">加入对比</button>
+        <button class="btn-primary" id="shareTrack">生成分享卡</button>
+      </div>
+      <div class="source-note" id="trackSource"></div>
+    </section>
+
+    <!-- ============ 数据对比 ============ -->
+    <section class="view" id="view-compare">
+      <div class="cmp-head">
+        <select id="cmpA" class="cmp-select"></select>
+        <span class="cmp-vs">对比</span>
+        <select id="cmpB" class="cmp-select"></select>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-label">六维对比</span>
+          <span class="unit-note">每条轴 = 一个维度</span>
+        </div>
+        <div class="radar-wrap" id="radarWrap"></div>
+        <div class="radar-legend" id="radarLegend"></div>
+        <div class="radar-verdict" id="radarVerdict"></div>
+        <div class="presets" id="presets"></div>
+        <div class="weights" id="weights"></div>
+        <div class="weight-note">产品不替你定权重：你觉得哪个维度更重要，就把它拉高，上面的形状和结论会跟着变。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-label">榜单并集</span>
+          <span class="unit-note">含缺失标注</span>
+        </div>
+        <div class="union" id="unionList"></div>
+      </div>
+
+      <button class="btn-primary" id="makeCard">生成对比卡</button>
+      <div class="source-note" id="cmpSource"></div>
+    </section>
+
+    <!-- ============ 歌手页 ============ -->
+    <section class="view" id="view-artist">
+      <div class="artist-head">
+        <div class="cover artist-cover" id="artistAvatar"></div>
+        <div class="artist-info">
+          <div class="artist-name" id="artistName"></div>
+          <div class="artist-sub" id="artistSub"></div>
+        </div>
+      </div>
+
+      <div class="profile-stats" id="artistStats"></div>
+
+      <h2 class="section-title">在榜作品</h2>
+      <div class="fav-list" id="artistSongs"></div>
+
+      <div class="card ai-card">
+        <div class="card-head">
+          <span class="card-label">AI 解读</span>
+          <span class="unit-note">按歌手维度</span>
+        </div>
+        <div class="ai-verdict" id="artistVerdict"></div>
+        <ul class="ai-list" id="artistAiList"></ul>
+      </div>
+
+      <div class="source-note" id="artistSource"></div>
+    </section>
+
+    <!-- ============ 榜单页 ============ -->
+    <section class="view" id="view-chart">
+      <div class="chart-head">
+        <div class="chart-head-main">
+          <div class="chart-name" id="chartName"></div>
+          <div class="chart-meta" id="chartMeta"></div>
+        </div>
+      </div>
+      <div class="chart-list" id="chartList"></div>
+      <div class="source-note" id="chartSource"></div>
+    </section>
+
+    <!-- ============ 我的 ============ -->
+    <section class="view" id="view-profile">
+      <div class="profile-head">
+        <div class="avatar">数</div>
+        <div class="profile-info">
+          <div class="profile-name">数据迷</div>
+          <div class="profile-sub">QQ音乐用户 · 已关注 3 位歌手</div>
+        </div>
+      </div>
+
+      <div class="profile-stats" id="profileStats"></div>
+
+      <h2 class="section-title">我收藏的走势</h2>
+      <div class="fav-list" id="favList"></div>
+
+      <div class="source-note">收藏保存在本机（Demo 使用浏览器本地存储）· 正式版与账号同步</div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab active" data-view="home"><span class="tab-ico" id="icoTabHome"></span><span>现场</span></button>
+    <button class="tab" data-view="compare"><span class="tab-ico" id="icoTabCompare"></span><span>对比</span></button>
+    <button class="tab" data-view="profile"><span class="tab-ico" id="icoTabProfile"></span><span>我的</span></button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="share-modal" id="shareModal" hidden>
+    <div class="share-modal-inner">
+      <img id="sharePreviewImg" alt="分享卡预览">
+      <div class="share-actions">
+        <button class="btn-ghost" id="shareClose">关闭</button>
+        <button class="btn-primary" id="shareSave">保存图片</button>
+      </div>
+      <div class="share-hint">图上已含数据来源、取数时间与口径说明</div>
+    </div>
+  </div>
+</div>
+
+<noscript>
+  <p style="color:#E9EBEF;font-family:sans-serif;padding:24px">
+    这个 Demo 需要 JavaScript 才能运行，请开启后刷新。
+  </p>
+</noscript>
+
+<script src="data.js"></script>
+<script src="charts.js"></script>
+<script src="covers-inline.js"></script>
+<script src="share-card.js"></script>
+<script src="assets.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# ---------- 临时与本地产物 ----------
+work/
+node_modules/
+.netlify/
+dist/
+
+# ---------- 系统与编辑器 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# ---------- 个人内容（不随仓库公开） ----------
+outputs/聊天记录导出/

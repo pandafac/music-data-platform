@@ -1,0 +1,39 @@
+{
+  "fetchedAt": "2026-10-08 14:13",
+  "sources": [
+    {
+      "name": "微博热搜",
+      "scanned": 50,
+      "matched": 0
+    },
+    {
+      "name": "抖音热榜",
+      "scanned": 50,
+      "matched": 3
+    },
+    {
+      "name": "百度热搜",
+      "scanned": 0,
+      "matched": 0
+    }
+  ],
+  "scanned": 100,
+  "items": [
+    {
+      "text": "大鹏白客合唱舞台直拍",
+      "heat": 7636298,
+      "source": "抖音热榜"
+    },
+    {
+      "text": "跟我一起体验黄明昊VR演唱会",
+      "heat": 7611591,
+      "source": "抖音热榜"
+    },
+    {
+      "text": "Holy Moly国庆作业MVP结算版",
+      "heat": 7252045,
+      "source": "抖音热榜"
+    }
+  ],
+  "note": "共扫描 100 条，命中音乐相关 3 条"
+}

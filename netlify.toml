@@ -1,0 +1,32 @@
+# Netlify 部署配置
+#
+# 站点是纯静态的：没有构建步骤，发布目录就是 demo/。
+# 本地预览：双击 demo/index.html，或运行 npx serve demo
+
+[build]
+  publish = "demo"
+
+# 安全响应头
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+# 图片资源内容不变，长缓存
+[[headers]]
+  for = "/covers/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML 与数据每次校验，保证刷新能拿到新版
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
